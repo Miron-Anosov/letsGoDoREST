@@ -6,19 +6,25 @@ import (
 )
 
 func index(w http.ResponseWriter, r *http.Request) {
-	log.Println("GET http://127.0.0.1:8080/")
+	url := &r.URL.Path
+	if *url != "/" {
+		log.Printf("GET status 404 http://127.0.0.1:8080%s", *url)
+		http.NotFound(w, r)
+		return
+	}
+	log.Println("GET status 200 http://127.0.0.1:8080/")
 	w.Write([]byte("Hello world"))
 
 }
 
 func login(w http.ResponseWriter, r *http.Request) {
-	log.Println("GET http://127.0.0.1:8080/login")
+	log.Println("GET status 200 http://127.0.0.1:8080/login")
 	w.Write([]byte("Welcome"))
 
 }
 
 func logout(w http.ResponseWriter, r *http.Request) {
-	log.Println("GET http://127.0.0.1:8080/logout")
+	log.Println("GET status 200 http://127.0.0.1:8080/logout")
 	w.Write([]byte("Goodbay"))
 
 }
