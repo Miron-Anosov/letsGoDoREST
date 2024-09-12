@@ -35,13 +35,14 @@ func notes(w http.ResponseWriter, r *http.Request) {
 	// Создает новую заметку
 	if r.Method != http.MethodPost {
 		log.Println("POST status 405 http://127.0.0.1:8080/notes")
-		w.WriteHeader(405) //  вызывать можно только один раз перед отправкой ответа.
-		w.Write([]byte("You can use only POST method"))
+		w.Header().Set("Allow", http.MethodPost) // устанавливаем заголовок ответа.
+		http.Error(w, "Method Not Allowed", http.StatusMethodNotAllowed)
 		return
 	}
 
-	w.WriteHeader(201)
-	w.Write([]byte("Create a new notes"))
+	w.Header().Set("Content-Type", "application/json") // сначало нужно установить заголовокБ а потом статус-код
+	w.WriteHeader(201) //  вызывать можно только один раз перед отправкой ответа.
+	w.Write([]byte(`{"status": OK}`))
 
 }
 
