@@ -19,14 +19,14 @@ func index(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func login(w http.ResponseWriter, r *http.Request) {
+func login(w http.ResponseWriter, _ *http.Request) {
 	// Полуваем все заметки
 	log.Println("GET status 200 http://127.0.0.1:8080/login")
 	w.Write([]byte("Welcome"))
 
 }
 
-func get_notes_by_id(w http.ResponseWriter, r *http.Request) {
+func getNotesByID(w http.ResponseWriter, r *http.Request) {
 	// Получаем заметку по ID
 	id, err := strconv.Atoi(r.URL.Query().Get("id"))
 	if err != nil || id < 1 {
@@ -40,7 +40,7 @@ func get_notes_by_id(w http.ResponseWriter, r *http.Request) {
 
 }
 
-func post_new_note(w http.ResponseWriter, r *http.Request) {
+func postNewNote(w http.ResponseWriter, r *http.Request) {
 	// Создает новую заметку
 	if r.Method != http.MethodPost {
 		log.Println("POST status 405 http://127.0.0.1:8080/notes")
@@ -59,8 +59,8 @@ func main() {
 	mux := http.NewServeMux()
 	mux.HandleFunc("/", index)
 	mux.HandleFunc("/login", login)
-	mux.HandleFunc("/notes", get_notes_by_id)
-	mux.HandleFunc("/notes/new", post_new_note)
+	mux.HandleFunc("/notes", getNotesByID)
+	mux.HandleFunc("/notes/new", postNewNote)
 	log.Println("Run server http://127.0.0.1:8080")
 	err := http.ListenAndServe(":8080", mux)
 	log.Fatal(err)
